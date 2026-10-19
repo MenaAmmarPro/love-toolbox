@@ -259,6 +259,18 @@
 .tb-kv dd { margin: 0; overflow-wrap: anywhere; }
 
 .tb-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85rem; }
+
+.tb-swatch { transition: background 0.15s ease; }
+.tb-swatch-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tb-swatch-chip {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  padding: 0;
+}
+.tb-swatch-chip:hover { transform: translateY(-2px); }
 .tb-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
 .tb-error { color: #ff8a8a; font-size: 0.85rem; min-height: 1.1em; }
 
