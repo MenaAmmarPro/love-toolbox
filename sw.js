@@ -14,6 +14,7 @@ const ASSETS = [
   "js/theme-main.js",
   "js/effects.js",
   "js/app.js",
+  "js/tools/calculator.js",
   "manifest.webmanifest",
   "assets/favicon.svg",
   "assets/apple-touch-icon.png",

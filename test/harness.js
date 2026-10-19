@@ -296,8 +296,10 @@ assert(NS.getState().favorites.length === 0, "clearAll empties favourites");
 // search
 assert(NS.searchTools("").length === NS.list().length, "empty search returns all tools");
 if (toolCount) {
-  const s1 = NS.searchTools("unit").map((t) => t.id);
-  assert(s1.length >= 1, "search finds something for 'unit'");
+  const first = NS.list()[0];
+  const s1 = NS.searchTools(first.name).map((t) => t.id);
+  assert(s1.indexOf(first.id) !== -1, "search finds a tool by its own name");
+  assert(NS.searchTools("zzzzzznotool").length === 0, "search returns nothing for gibberish");
 }
 assert(NS.getTool("nope") === null, "getTool(unknown) → null");
 
