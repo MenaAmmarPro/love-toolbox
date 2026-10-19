@@ -63,5 +63,34 @@ module.exports = {
     eq(calc.factorial(0), 1, "calculator: 0! = 1");
     eq(calc.factorial(5), 120, "calculator: 5!");
     eq(calc.fmt(0.1 + 0.2), "0.3", "calculator: fmt cleans float noise");
+  },
+
+  units: function (units, t) {
+    const { assert, eq, close } = t;
+
+    eq(units.convert(1, "length", "km", "m"), 1000, "units: 1 km = 1000 m");
+    close(units.convert(1, "length", "mi", "m"), 1609.344, 1e-9, "units: 1 mi in m");
+    close(units.convert(1, "length", "in", "cm"), 2.54, 1e-9, "units: 1 in = 2.54 cm");
+    close(units.convert(1, "length", "km", "mi"), 0.621371192237334, 1e-9, "units: 1 km in miles");
+    close(units.convert(1, "mass", "kg", "lb"), 2.2046226218487757, 1e-9, "units: 1 kg in lb");
+    close(units.convert(100, "temperature", "°C", "°F"), 212, 1e-9, "units: 100°C = 212°F");
+    close(units.convert(0, "temperature", "°C", "K"), 273.15, 1e-9, "units: 0°C = 273.15 K");
+    close(units.convert(32, "temperature", "°F", "°C"), 0, 1e-9, "units: 32°F = 0°C");
+    close(units.convert(1, "data", "GB", "MB"), 1024, 1e-9, "units: 1 GB = 1024 MB");
+    close(units.convert(1, "data", "GB", "bit"), 8589934592, 1e-3, "units: 1 GB in bits");
+    close(units.convert(1, "energy", "kWh", "J"), 3600000, 1e-6, "units: 1 kWh = 3.6 MJ");
+    close(units.convert(1, "time", "h", "s"), 3600, 1e-9, "units: 1 h = 3600 s");
+    close(units.convert(1, "speed", "km/h", "m/s"), 0.2777777777777778, 1e-9, "units: km/h → m/s");
+    close(units.convert(180, "angle", "deg", "rad"), Math.PI, 1e-9, "units: 180° = π rad");
+    close(units.convert(1, "area", "ha", "m²"), 10000, 1e-9, "units: 1 ha = 10 000 m²");
+    close(units.convert(1, "volume", "l", "ml"), 1000, 1e-9, "units: 1 l = 1000 ml");
+    close(units.convert(1, "pressure", "atm", "Pa"), 101325, 1e-6, "units: 1 atm = 101325 Pa");
+    close(units.convert(1, "power", "hp", "W"), 745.6998715822702, 1e-6, "units: 1 hp in W");
+
+    assert(units.unitsOf("length").indexOf("mi") !== -1, "units: length includes miles");
+    assert(units.unitsOf("nope").length === 0, "units: unknown category → no units");
+    assert(Number.isNaN(units.convert(1, "length", "km", "nope")), "units: unknown unit → NaN");
+    assert(units.convertAll(1, "length", "m").length === units.unitsOf("length").length, "units: convertAll covers all units");
+    eq(units.convert(0, "length", "m", "km"), 0, "units: zero stays zero");
   }
 };
