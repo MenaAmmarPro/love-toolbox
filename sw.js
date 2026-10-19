@@ -18,6 +18,7 @@ const ASSETS = [
   "js/tools/units.js",
   "js/tools/dates.js",
   "js/tools/text.js",
+  "js/tools/base.js",
   "manifest.webmanifest",
   "assets/favicon.svg",
   "assets/apple-touch-icon.png",

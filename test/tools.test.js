@@ -184,5 +184,30 @@ module.exports = {
 
     const shuffled = txt.shuffleLines("a\nb\nc", () => 0);
     eq(shuffled.split("\n").sort(), ["a", "b", "c"], "text: shuffle keeps all lines");
+  },
+
+  base: function (base, t) {
+    const { assert, eq } = t;
+
+    eq(base.convert("ff", 16, 10), "255", "base: hex → dec");
+    eq(base.convert("255", 10, 16), "ff", "base: dec → hex");
+    eq(base.convert("1010", 2, 10), "10", "base: bin → dec");
+    eq(base.convert("777", 8, 10), "511", "base: oct → dec");
+    eq(base.convert("-10", 10, 2), "-1010", "base: negative");
+    eq(base.convert("z", 36, 10), "35", "base: base36 digit");
+    eq(base.convert("0", 10, 2), "0", "base: zero");
+    eq(base.convert("0x1f", 16, 10), "31", "base: 0x prefix tolerated");
+    eq(base.convert("1 000", 10, 10), "1000", "base: spaces tolerated");
+    eq(base.convert("ffffffffffffffff", 16, 10), "18446744073709551615", "base: 64-bit exact (BigInt)");
+    assert(base.convert("2", 2, 10) === null, "base: invalid digit → null");
+    assert(base.convert("", 10, 10) === null, "base: empty → null");
+
+    eq(base.toBaseBig(0n, 2), "0", "base: toBaseBig zero");
+    eq(base.toBaseBig(12345678901234567890n, 16), "ab54a98ceb1f0ad2", "base: huge → hex");
+    eq(base.group("11111111"), "1111 1111", "base: binary grouping");
+    eq(base.group("-1111"), "-1111", "base: negative grouping");
+    eq(base.toBytes(0x4142n), [65, 66], "base: toBytes");
+    eq(base.toAscii(0x4142n), "AB", "base: toAscii");
+    eq(base.fmtBig(1234567n), "1,234,567", "base: thousands grouping");
   }
 };
