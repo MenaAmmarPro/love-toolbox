@@ -92,5 +92,42 @@ module.exports = {
     assert(Number.isNaN(units.convert(1, "length", "km", "nope")), "units: unknown unit → NaN");
     assert(units.convertAll(1, "length", "m").length === units.unitsOf("length").length, "units: convertAll covers all units");
     eq(units.convert(0, "length", "m", "km"), 0, "units: zero stays zero");
+  },
+
+  dates: function (dates, t) {
+    const { assert, eq } = t;
+
+    assert(dates.isLeapYear(2024), "dates: 2024 is a leap year");
+    assert(!dates.isLeapYear(1900), "dates: 1900 is not a leap year");
+    assert(dates.isLeapYear(2000), "dates: 2000 is a leap year");
+    eq(dates.daysInMonth(2024, 1), 29, "dates: Feb 2024 has 29 days");
+    eq(dates.daysInMonth(2023, 1), 28, "dates: Feb 2023 has 28 days");
+
+    eq(dates.toISO(new Date(2026, 9, 19)), "2026-10-19", "dates: toISO pads");
+    const parsed = dates.parseDate("2026-10-19");
+    eq(dates.toISO(parsed), "2026-10-19", "dates: parseDate ISO round trip");
+    assert(dates.parseDate("nonsense!!") === null, "dates: bad date → null");
+
+    eq(dates.daysBetween(new Date(2026, 0, 1), new Date(2026, 0, 31)), 30, "dates: daysBetween");
+    eq(dates.toISO(dates.addDays(new Date(2026, 0, 31), 1)), "2026-02-01", "dates: addDays crosses month");
+    eq(dates.toISO(dates.addDays(new Date(2026, 9, 19), -19)), "2026-09-30", "dates: subtract days");
+    eq(dates.toISO(dates.addMonths(new Date(2026, 0, 31), 1)), "2026-02-28", "dates: addMonths clamps");
+    eq(dates.toISO(dates.addYears(new Date(2020, 1, 29), 1)), "2021-02-28", "dates: leap day +1 year clamps");
+
+    const diff = dates.diffParts(new Date(2020, 0, 15), new Date(2021, 2, 20));
+    eq([diff.years, diff.months, diff.days], [1, 2, 5], "dates: diffParts y/m/d");
+    eq(diff.totalDays, 430, "dates: diffParts totalDays");
+
+    const age = dates.ageOn(new Date(2000, 0, 1), new Date(2026, 0, 1));
+    eq(age.years, 26, "dates: age years");
+    eq(age.months, 0, "dates: age months");
+    eq(age.days, 0, "dates: age days on birthday");
+    eq(age.daysToNextBirthday, 365, "dates: days to next birthday");
+    eq(age.nextBirthday, "2027-01-01", "dates: next birthday");
+
+    eq(dates.weekNumber(new Date(2026, 0, 1)) >= 1, true, "dates: week number is sane");
+    eq(dates.quarter(new Date(2026, 9, 19)), 4, "dates: quarter");
+    eq(dates.formatDate(new Date(2026, 9, 5), "DD/MM/YYYY"), "05/10/2026", "dates: custom format");
+    eq(dates.formatDate(new Date(2026, 9, 5), "YYYY-MM-DD"), "2026-10-05", "dates: ISO format");
   }
 };
