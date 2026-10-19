@@ -209,5 +209,38 @@ module.exports = {
     eq(base.toBytes(0x4142n), [65, 66], "base: toBytes");
     eq(base.toAscii(0x4142n), "AB", "base: toAscii");
     eq(base.fmtBig(1234567n), "1,234,567", "base: thousands grouping");
+  },
+
+  roman: function (roman, t) {
+    const { assert, eq } = t;
+
+    eq(roman.toRoman(1), "I", "roman: 1");
+    eq(roman.toRoman(4), "IV", "roman: 4");
+    eq(roman.toRoman(9), "IX", "roman: 9");
+    eq(roman.toRoman(40), "XL", "roman: 40");
+    eq(roman.toRoman(90), "XC", "roman: 90");
+    eq(roman.toRoman(400), "CD", "roman: 400");
+    eq(roman.toRoman(1987), "MCMLXXXVII", "roman: 1987");
+    eq(roman.toRoman(2026), "MMXXVI", "roman: 2026");
+    eq(roman.toRoman(3999), "MMMCMXCIX", "roman: 3999");
+    assert(roman.toRoman(0) === null, "roman: 0 rejected");
+    assert(roman.toRoman(4000) === null, "roman: 4000 rejected");
+    assert(roman.toRoman("x") === null, "roman: non-number rejected");
+
+    eq(roman.fromRoman("XIV"), 14, "roman: XIV = 14");
+    eq(roman.fromRoman("MCMLXXXVII"), 1987, "roman: MCMLXXXVII");
+    eq(roman.fromRoman("mmxxvi"), 2026, "roman: lowercase accepted");
+    assert(roman.fromRoman("IIII") === null, "roman: non-canonical IIII rejected");
+    assert(roman.fromRoman("VX") === null, "roman: VX rejected");
+    assert(roman.fromRoman("ABC") === null, "roman: letters rejected");
+    assert(roman.fromRoman("") === null, "roman: empty rejected");
+
+    // round-trip 1..3999
+    let allOk = true;
+    for (let n = 1; n <= 3999; n += 1) {
+      if (roman.fromRoman(roman.toRoman(n)) !== n) { allOk = false; break; }
+    }
+    assert(allOk, "roman: 1..3999 round-trip");
+    assert(roman.expand(1987).length > 0, "roman: breakdown exists");
   }
 };
