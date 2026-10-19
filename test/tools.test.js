@@ -242,5 +242,37 @@ module.exports = {
     }
     assert(allOk, "roman: 1..3999 round-trip");
     assert(roman.expand(1987).length > 0, "roman: breakdown exists");
+  },
+
+  colors: function (colors, t) {
+    const { assert, eq, close } = t;
+
+    eq(colors.parse("#ff0000"), { r: 255, g: 0, b: 0, a: 1 }, "colors: parse #rrggbb");
+    eq(colors.parse("#f00"), { r: 255, g: 0, b: 0, a: 1 }, "colors: parse #rgb");
+    eq(colors.parse("red"), { r: 255, g: 0, b: 0, a: 1 }, "colors: parse named");
+    eq(colors.parse("rgb(1, 2, 3)"), { r: 1, g: 2, b: 3, a: 1 }, "colors: parse rgb()");
+    close(colors.parse("rgba(0,0,0,0.5)").a, 0.5, 1e-9, "colors: parse rgba alpha");
+    assert(colors.parse("nope") === null, "colors: bad colour → null");
+    assert(colors.parse("") === null, "colors: empty → null");
+
+    eq(colors.toHex({ r: 255, g: 159, b: 207, a: 1 }), "#FF9FCF", "colors: toHex");
+    eq(colors.toRgbString({ r: 1, g: 2, b: 3, a: 1 }), "rgb(1, 2, 3)", "colors: toRgbString");
+    eq(colors.toRgbString({ r: 1, g: 2, b: 3, a: 0.5 }), "rgba(1, 2, 3, 0.5)", "colors: toRgbString alpha");
+
+    eq(colors.toHsl({ r: 255, g: 0, b: 0, a: 1 }), { h: 0, s: 100, l: 50 }, "colors: red HSL");
+    eq(colors.toHsl({ r: 255, g: 255, b: 255, a: 1 }), { h: 0, s: 0, l: 100 }, "colors: white HSL");
+    eq(colors.toHsv({ r: 255, g: 0, b: 0, a: 1 }), { h: 0, s: 100, v: 100 }, "colors: red HSV");
+    eq(colors.toCmyk({ r: 0, g: 0, b: 0, a: 1 }), { c: 0, m: 0, y: 0, k: 100 }, "colors: black CMYK");
+    eq(colors.toCmyk({ r: 255, g: 255, b: 255, a: 1 }), { c: 0, m: 0, y: 0, k: 0 }, "colors: white CMYK");
+
+    eq(colors.toHex(colors.hslToRgb(0, 100, 50)), "#FF0000", "colors: hslToRgb red");
+    eq(colors.toHex(colors.hslToRgb(120, 100, 50)), "#00FF00", "colors: hslToRgb green");
+
+    close(colors.contrastRatio({ r: 0, g: 0, b: 0, a: 1 }, { r: 255, g: 255, b: 255, a: 1 }), 21, 0.01, "colors: black/white contrast 21:1");
+    eq(colors.readableOn({ r: 255, g: 255, b: 255, a: 1 }), "#000000", "colors: readable on white");
+    eq(colors.readableOn({ r: 0, g: 0, b: 0, a: 1 }), "#FFFFFF", "colors: readable on black");
+    eq(colors.toHex(colors.mix({ r: 0, g: 0, b: 0, a: 1 }, { r: 255, g: 255, b: 255, a: 1 }, 0.5)), "#808080", "colors: mix midpoint");
+    assert(colors.toHsl(colors.lighten({ r: 128, g: 0, b: 0, a: 1 }, 20)).l > 25, "colors: lighten increases lightness");
+    assert(colors.toHsl(colors.darken({ r: 128, g: 0, b: 0, a: 1 }, 20)).l < 26, "colors: darken decreases lightness");
   }
 };
