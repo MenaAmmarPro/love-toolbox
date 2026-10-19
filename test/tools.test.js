@@ -129,5 +129,60 @@ module.exports = {
     eq(dates.quarter(new Date(2026, 9, 19)), 4, "dates: quarter");
     eq(dates.formatDate(new Date(2026, 9, 5), "DD/MM/YYYY"), "05/10/2026", "dates: custom format");
     eq(dates.formatDate(new Date(2026, 9, 5), "YYYY-MM-DD"), "2026-10-05", "dates: ISO format");
+  },
+
+  text: function (txt, t) {
+    const { assert, eq } = t;
+
+    const s = txt.stats("Hello world. This is a test!\n\nSecond paragraph here.");
+    eq(s.words, 9, "text: word count");
+    eq(s.lines, 3, "text: line count");
+    eq(s.sentences, 3, "text: sentence count");
+    eq(s.paragraphs, 2, "text: paragraph count");
+    assert(s.characters > 0 && s.charactersNoSpaces < s.characters, "text: character counts");
+
+    eq(txt.titleCase("hello WORLD of js"), "Hello World Of Js", "text: title case");
+    eq(txt.sentenceCase("hello world. second one. third"), "Hello world. Second one. Third", "text: sentence case");
+    eq(txt.capitalize("hello world"), "Hello World", "text: capitalize");
+    eq(txt.camelCase("hello world-of_js"), "helloWorldOfJs", "text: camelCase");
+    eq(txt.pascalCase("hello world"), "HelloWorld", "text: PascalCase");
+    eq(txt.snakeCase("HelloWorld thing"), "hello_world_thing", "text: snake_case");
+    eq(txt.kebabCase("HelloWorld thing"), "hello-world-thing", "text: kebab-case");
+    eq(txt.constantCase("hello world"), "HELLO_WORLD", "text: CONSTANT_CASE");
+    eq(txt.dotCase("Hello World"), "hello.world", "text: dot.case");
+
+    eq(txt.reverseText("abc"), "cba", "text: reverse");
+    eq(txt.reverseLines("a\nb\nc"), "c\nb\na", "text: reverse lines");
+    eq(txt.sortLines("b\nc\na"), "a\nb\nc", "text: sort lines");
+    eq(txt.sortLines("b\nc\na", true), "c\nb\na", "text: sort lines descending");
+    eq(txt.uniqueLines("a\nb\na\nc"), "a\nb\nc", "text: unique lines");
+    eq(txt.trimLines("  a  \n b"), "a\nb", "text: trim lines");
+    eq(txt.removeEmptyLines("a\n\n\nb"), "a\nb", "text: remove empty lines");
+    eq(txt.collapseSpaces("a    b\n   c"), "a b\nc", "text: collapse spaces");
+    eq(txt.removeLineBreaks("a\nb\n c"), "a b c", "text: join lines");
+    eq(txt.numberLines("a\nb"), "1. a\n2. b", "text: number lines");
+    eq(txt.numberLines("a\nb", 5), "5. a\n6. b", "text: number lines start");
+
+    eq(txt.slugify("Héllo Wörld! 42 things"), "hello-world-42-things", "text: slugify strips accents");
+    eq(txt.escapeHtml("<a href=\"x\">&"), "&lt;a href=&quot;x&quot;&gt;&amp;", "text: escape html");
+    eq(txt.unescapeHtml("&lt;b&gt;hi&lt;/b&gt;"), "<b>hi</b>", "text: unescape html");
+    eq(txt.stripTags("<p>hi <b>there</b></p>"), "hi there", "text: strip tags");
+    eq(txt.wrapText("one two three four", 7), "one two\nthree\nfour", "text: wrap");
+
+    eq(txt.findReplace("aAaA", "a", "x", false), "xxxx", "text: replace insensitive");
+    eq(txt.findReplace("aAaA", "a", "x", true), "xAxA", "text: replace sensitive");
+    eq(txt.findReplace("abc", "$1", "$2"), "abc", "text: replace treats find literally");
+
+    eq(txt.extractEmails("me@x.com and you@y.org"), ["me@x.com", "you@y.org"], "text: extract emails");
+    eq(txt.extractUrls("see https://a.b/c and http://d.e"), ["https://a.b/c", "http://d.e"], "text: extract urls");
+    eq(txt.extractNumbers("a1 b-2.5 c"), [1, -2.5], "text: extract numbers");
+
+    const freq = txt.wordFrequency("the cat the dog the", 1, 2);
+    eq(freq[0].word, "the", "text: most common word");
+    eq(freq[0].count, 3, "text: most common count");
+    eq(txt.wordFrequency("a b", 5).length, 0, "text: min count filters");
+
+    const shuffled = txt.shuffleLines("a\nb\nc", () => 0);
+    eq(shuffled.split("\n").sort(), ["a", "b", "c"], "text: shuffle keeps all lines");
   }
 };
