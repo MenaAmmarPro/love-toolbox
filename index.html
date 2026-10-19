@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Love Toolbox — a little helper for every day</title>
+  <meta name="description" content="An all-in-one toolbox for Mena and Ammar — calculators, converters, text and dev tools, notes, timers and more. Everything stays on your device.">
+  <meta property="og:title" content="Love Toolbox — a little helper for every day">
+  <meta property="og:description" content="An all-in-one toolbox — calculators, converters, text and dev tools, notes, timers and more.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#090b20">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body data-page="toolbox">
+  <canvas id="starfield" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="https://menaammarpro.github.io/">&#9829; Mena &amp; Ammar</a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">Menu</button>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#/">Dashboard</a>
+      <a href="#/settings">Settings</a>
+      <a href="https://menaammarpro.github.io/">All projects</a>
+      <button id="tb-open-palette" class="theme-toggle" type="button" aria-label="Open command palette (Ctrl+K)">Search <kbd>Ctrl K</kbd></button>
+      <button class="theme-toggle" type="button" aria-label="Toggle color theme">Theme</button>
+    </nav>
+  </header>
+
+  <main id="tb-app" class="tb-main">
+    <aside id="tb-sidebar" class="tb-sidebar" aria-label="Tools">
+      <div class="tb-sidebar-inner">
+        <p class="tb-sidebar-title">Toolbox</p>
+        <nav id="tb-nav" class="tb-nav"></nav>
+      </div>
+    </aside>
+
+    <section id="tb-view" class="tb-view" aria-live="polite"></section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Made with love, just for you <span aria-hidden="true">&#9829;</span></p>
+    <p class="footer-small">Everything stays on your device &middot; Ammar &rarr; Mena &middot; Karachi &rarr; Bucharest</p>
+  </footer>
+
+  <!-- Command palette -->
+  <div id="tb-palette" class="tb-palette" hidden>
+    <div class="tb-palette-backdrop" data-close="palette"></div>
+    <div class="tb-palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input id="tb-palette-input" class="tb-palette-input" type="text" autocomplete="off" spellcheck="false" placeholder="Search tools… (arrow keys, Enter)">
+      <ul id="tb-palette-list" class="tb-palette-list"></ul>
+      <p class="tb-palette-hint">Esc to close &middot; Ctrl+K to open</p>
+    </div>
+  </div>
+
+  <div id="tb-toasts" class="tb-toasts" aria-live="polite"></div>
+
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top" hidden>&#8679;</button>
+  <script src="js/theme-main.js" defer></script>
+  <script src="js/effects.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <!-- tools:start -->
+  <!-- tools:end -->
+</body>
+</html>

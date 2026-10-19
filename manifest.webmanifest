@@ -1,0 +1,14 @@
+{
+  "name": "Love Toolbox — a little helper for every day",
+  "short_name": "Love Toolbox",
+  "description": "An all-in-one toolbox — calculators, converters, text and dev tools, notes, timers and more. Everything stays on your device.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#090b20",
+  "theme_color": "#090b20",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/og-image.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
