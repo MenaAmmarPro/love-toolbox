@@ -5,7 +5,7 @@
  * Cache-first for local assets, with a versioned cache we bump on release.
  */
 
-const CACHE = "mena-toolbox-v1";
+const CACHE = "mena-toolbox-v2";
 const ASSETS = [
   ".",
   "index.html",
@@ -21,6 +21,7 @@ const ASSETS = [
   "js/tools/base.js",
   "js/tools/roman.js",
   "js/tools/colors.js",
+  "js/tools/colorpicker.js",
   "manifest.webmanifest",
   "assets/favicon.svg",
   "assets/apple-touch-icon.png",
